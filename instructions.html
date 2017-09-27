@@ -1,0 +1,166 @@
+<!-- ####### JEKYLL SETUP ####### -->
+First thing, install jekyll.
+
+Command - sudo gem install jekyll bundler
+
+Then, new project
+
+Command - jekyll new demosite
+
+Run Jekyll server > Go into the project folder >
+This creates the folder _site which contains everything for the site including index.html. These are the files we actually upload to the server.
+
+Command - bundle exec jekyll serve
+
+Then remove the base 'theme' of 'minima'. Empty the _posts folder, remove index.md, about.md, then in _config.yml, remove the entire 'theme: minima' line. Also, in Gemfile, line 'gem minima ~> 2.0'
+
+then go back in terminal and command - bundle. (this removes these dependancies)
+
+Then in the project folder, add a folder for _includes and _layouts. Then for the example, copy the template website and paste it in demosite.
+
+command - bundle
+
+then start the server again
+
+command - bundle exec jekyll serve. Then you can view the starter files in _site. _site folder is the stuff you want to upload to the server. The folders with the underscore are the files/folders Jekyll uses.
+<!-- ####### JEKYLL SETUP ####### -->
+
+
+
+
+<!-- ####### PIECING THE SITE APART ####### -->
+When you're ready to start cutting up your site, make a file called default.html in _layouts folder. Then, copy the meta and full header html code, and paste into default.html. Also add the footer code to the bottom of the default.html file. This is putting the skeleton together in the default.html file.
+
+Now, for content, put {{ content }} in the middle. (In general, all the fully-made html pages are in the demosite folder like contact.html, index.html.) Now that we have the meta, header and footer in the default, we can strip them from the other fully coded pages like contact.html etc.
+
+Now we need to take care of the YAML Front Matter. Use 3 dashes to start, and 3 to end it. Front Matter needs to always be at the beginning of the file, so Jekyll knows to process it.
+
+Add and edit the Front Matter and include it for all the pages like contact, about us, etc.
+
+Then go to the default.html file and for title, delete the title and instead add {% if page.title %} {{ page.title }}{% else %} Great web agency{% endif %}
+
+Now, since the global-header introduction is on all subpages, we can cut it from one, then paste into a new file called subpage-header.html in the _includes folder. Then for all these subpages, put   {% include subpage-header.html %} in replacement, and Jekyll will know to look in the _includes folder for this file everytime the subpage loads.
+
+Now, in subpage-header.html, put {{ page.title }} for the <h1> area for dynamic injection.
+
+For the header on the homepage, to keep things organized and clear, make a new file called home-slider.html in the _includes folder. Then in  index.html, put {% include home-slider.html %}. Then in the home-slider, add the title tag.
+
+Now, we go ahead and piece out all the logic and repetitive pieces of our code, and put them into separate files in the _includes folder. This is for areas like google-map, contact-form, contact-info, services offered, social icons, default nav, footer nav etc.
+
+Now our pages are DRY.
+<!-- ####### PIECING THE SITE APART ####### -->
+
+
+
+<!-- ####### _CONFIG.YML FILE ####### -->
+Moving to the blog now - Section 3 Lecture 8.
+
+Check config settings for the blog. First change the _config file's website title to your real title. Then in the default layout, substitute {% site.title %} for the else if portion.
+
+Edit the title (and import it), email, description (and import it), url (put in the localhost, or your domain)
+
+Now we add the base href to the default.html layout. This adds the default url to all the links on the page. Assets will always be displayed. In default.html, add <base href="{{ site.url }}">
+
+Now since we changed the _config.yml file, we need to restart the server.
+<!-- ####### _CONFIG.YML FILE ####### -->
+
+
+
+
+
+<!-- ####### YAML FRONT MATTER ####### -->
+YAML front matter is one of the features that gives Jekyll its strength and flexibility.
+Front matter is a form of YAML that Jekyll uses for maintaining information about a page and its content.
+
+Example of front matter used:
+
+---
+layout: default
+title: Portfolio
+---
+
+The 3 dashes here are called front matter blocks. These always appear at the top. The YAML matter itself is everything inbetween these 3 dashes.
+<!-- ####### YAML FRONT MATTER ####### -->
+
+
+
+
+<!-- ####### LIQUID TEMPLATE LANGUAGE - OUTPUT MARKUP vs TAG MARKUP ####### -->
+Output markup is used to output content using 2 curly braces. ie: {{ page.title }}
+
+Tag markup is used to perform logic. {% if page.title %} {% endif %}
+<!-- ####### LIQUID TEMPLATE LANGUAGE - OUTPUT MARKUP vs TAG MARKUP ####### -->
+
+
+
+
+
+<!-- ####### NAV MENU WITH ACTIVE STATES ####### -->
+Add {% if page.url == "/" %}class="active"{% endif %} inside the nav items, within the <li>
+<!-- ####### NAV MENU WITH ACTIVE STATES ####### -->
+
+
+
+
+
+<!-- ####### BLOG POSTS ####### -->
+Blogs are integrated into Jekyll's functionality. You can publish articles simply by managing a folder of text-files (_posts folder).
+
+No need for configuring or maintaining databases, no more security checking, no more slow page speeds.
+
+Jekyll requires blog posts to be titled in the following format: YEAR-MONTH-DAY-title.MARKUP (or extension .md)
+
+Create the post layout in _layouts. Then in _posts, create your first blog post. Use front matter to enter date, author etc. Then in layouts/post.html, input the variables for dynamic content. This is for date, author, title, image, etc.
+
+Default path to the posts are: category name/year/month/day/title.html
+
+Do logic for previous/next, subtitles.
+
+Shorten the default url for blog posts (it's so long as default: http://localhost:4000/jekyll/2017/09/22/benefits-of-static-website-generators.html)
+
+For full offerings, see the documentation: jekyllrb.com/docs/permalinks/
+
+We will use permalink: none. This goes in the _config.yml file. (restart the server since config changed)
+<!-- ####### BLOG POSTS ####### -->
+
+<!-- ####### ADD BLOG WIDGETS ####### -->
+front matter and looping in the blog post template
+<!-- ####### ADD BLOG WIDGETS ####### -->
+
+
+<!-- ####### DEFAULT VALUES ####### -->
+You build default values in the config.yml file. You can use the documentation to help: jekyllrb.com/docs/configuration
+
+Can set a default layout and variables for blog posts in config.yml. We did this for blog posts. Now you can delete the author, layout, and category from each blog post if desired. d
+<!-- ####### DEFAULT VALUES ####### -->
+
+
+<!-- ####### CONTACT FORM ####### -->
+Make an account on Formspree.io, put the code in the _includes/contact-form.html, move the form outside the block, then re-arrange the css from block .form, to .form block because of the rearranging. Then, it should look good.
+
+The Thank-You page. Go to Formspree for this snippet: <input type="hidden" name="_next" value="//site.io/thanks.html" />
+<!-- ####### CONTACT FORM ####### -->
+
+
+<!-- ####### USE & READ EXTERNAL DATA THROUGH LIQUID ####### -->
+Jekyll can read/use data from yml, json, cvs files.
+
+In the tutorial at S5 L18, we are splitting the icons and services names from _includes/home-services.html and putting them into _data/services.yml.
+
+Then, in home-services.html, we can remove all the additional service elements, and keep the first one and just run a loop through it with our variables/Liquid.
+
+For reading PROJECTS we will use JSON. Make a new file _data/projects.json
+<!-- ####### USE & READ EXTERNAL DATA THROUGH LIQUID ####### -->
+
+<!-- ####### ADDING PROJECTS FROM JSON ####### -->
+S 5 L19 - Added a loop to automatically grab project categories from json file to output into portfolio.
+<!-- ####### ADDING PROJECTS FROM JSON ####### -->
+
+<!-- ####### BLOG COMMENTS ####### -->
+We can use 'Disqus.com'. Home > Add Site > Universal Platform. Copy and paste code given into a new _includes/comments.html. Then add {% include comments %} in the post.html.
+
+We also added a switch to turn comments on or off. This is done in the config file.
+<!-- ####### BLOG COMMENTS ####### -->
+
+<!-- ####### GITHUB PROJECT PAGE ####### -->
+<!-- ####### GITHUB PROJECT PAGE ####### -->
